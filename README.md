@@ -1,1 +1,1 @@
-# fullStackOpen
+# Exercises pertaining to fullStackOpen
