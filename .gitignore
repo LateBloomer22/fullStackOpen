@@ -1,3 +1,6 @@
+#folder to create test projects
+tests/
+
 #folder to run tests
 testing/
 
