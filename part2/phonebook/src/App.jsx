@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -49,20 +52,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input value={filterValue} onChange={addNewSearch} />
-      </div>
+      <Filter filterValue={filterValue} addNewSearch={addNewSearch}/>
       <h2>Add a new</h2>
-        <form onSubmit={addPerson}>
-          <div>name: <input value={newName} onChange={addNewPerson} required/></div>
-          <div>number: <input value={newNumber} onChange={addNewNumber} required/></div>
-          <div>
-            <button type="submit">add</button>
-          </div>
-        </form>
-      <div>debug: {newName}</div>
+      <PersonForm addPerson={addPerson} newName={newName} addNewPerson={addNewPerson}
+      newNumber={newNumber} addNewNumber={addNewNumber}/>
       <h2>Numbers</h2>
-      <div>{personsList}</div>
+      <Persons personsList={personsList}/>
     </div>
   )
 }
