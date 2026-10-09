@@ -15,7 +15,7 @@ const App = () => {
     personService.getAll()
       .then(initialList => {
         console.log('promise fullfilled')
-        setPersons(initialList)
+        setPersons(initialList)      
       })
   }
 
@@ -49,8 +49,17 @@ const App = () => {
       )
     }   
   }
-  
-  const personsList = filteredPersons.map(person => <p key={person.id}>{person.name} {person.number}</p>)
+
+  const deletePerson = (id) => {
+    const targetPerson = filteredPersons.filter(person => person.id === id)[0].name
+    if (window.confirm(`Delete ${targetPerson}`)) {
+      personService.deleteEntry(id).then(returnedPerson => {
+        alert(`${targetPerson} was deleted`)
+        setPersons(persons.filter(person => person.id !== returnedPerson.id))
+        setFilterValue('')
+      })
+    }
+  }
 
   return (
     <div>
@@ -60,7 +69,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName} addNewPerson={addNewPerson}
       newNumber={newNumber} addNewNumber={addNewNumber}/>
       <h2>Numbers</h2>
-      <Persons personsList={personsList}/>
+      <Persons personsList={filteredPersons} deletePerson={deletePerson}/>
     </div>
   )
 }
