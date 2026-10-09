@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import personService from './services/person'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,11 +12,10 @@ const App = () => {
   const [filterValue, setFilterValue] = useState('')
 
   const getData = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService.getAll()
+      .then(initialList => {
         console.log('promise fullfilled')
-        setPersons(response.data)
+        setPersons(initialList)
       })
   }
 
@@ -40,10 +40,13 @@ const App = () => {
     if (persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      const nameObj = {name: newName, id: persons.length + 1, number: newNumber}
-      setPersons([...persons, nameObj])
-      setNewName('')
-      setNewNumber('')
+      const nameObj = {name: newName, number: newNumber}
+      personService.create(nameObj).then(returnedPerson => {
+        setPersons([...persons, returnedPerson])
+        setNewName('')
+        setNewNumber('')
+        }
+      )
     }   
   }
   
