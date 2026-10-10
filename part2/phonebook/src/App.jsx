@@ -4,12 +4,14 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/person'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterValue, setFilterValue] = useState('')
+  const [message, setMessage] = useState(null);
 
   const getData = () => {
     personService.getAll()
@@ -41,10 +43,16 @@ const App = () => {
       alert(`${newName} is already added to phonebook`)
     } else {
       const nameObj = {name: newName, number: newNumber}
-      personService.create(nameObj).then(returnedPerson => {
+      personService.create(nameObj).then(returnedPerson => 
+        {
         setPersons([...persons, returnedPerson])
         setNewName('')
         setNewNumber('')
+        setMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000);
+        
         }
       )
     }   
@@ -64,6 +72,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter filterValue={filterValue} addNewSearch={addNewSearch}/>
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} addNewPerson={addNewPerson}
