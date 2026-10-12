@@ -1,6 +1,14 @@
-.notification {
+.add-notification {
     border: 1px solid green ;
     color: green;
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.remove-notification {
+    border: 1px solid red ;
+    color: red;
     background-color: lightgray;
     border-radius: 5px;
     padding: 5px;

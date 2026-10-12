@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterValue, setFilterValue] = useState('')
   const [message, setMessage] = useState(null);
+  const [success, setSuccess] = useState(true)
 
   const getData = () => {
     personService.getAll()
@@ -50,8 +51,17 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             getData()
+            setSuccess(true)
             }
-          )
+          ).catch(error => {
+            console.log(error);
+            setSuccess(false);
+            setMessage(`Information of ${updatedPerson.name} has been removed from the server`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000);
+            getData()
+          })
         }
     } else {
       const nameObj = {name: newName, number: newNumber}
@@ -60,10 +70,11 @@ const App = () => {
         setPersons([...persons, returnedPerson])
         setNewName('')
         setNewNumber('')
+        setSuccess(true);
         setMessage(`Added ${returnedPerson.name}`)
         setTimeout(() => {
           setMessage(null)
-        }, 3000);
+        }, 5000);
         
         }
       )
@@ -84,7 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message}/>
+      <Notification message={message} success={success}/>
       <Filter filterValue={filterValue} addNewSearch={addNewSearch}/>
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} addNewPerson={addNewPerson}
