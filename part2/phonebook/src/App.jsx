@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -16,8 +15,9 @@ const App = () => {
   const getData = () => {
     personService.getAll()
       .then(initialList => {
-        console.log('promise fullfilled')
-        setPersons(initialList)      
+        setPersons(initialList)     
+        console.log(initialList);
+         
       })
   }
 
@@ -40,7 +40,19 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
     if (persons.map(person => person.name.toLowerCase()).includes(newName.toLowerCase())) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, Do you want to replace the old number with the new one ?`))
+        {
+          const targetId = persons.find(person => person.name.toLowerCase() === newName.toLowerCase()).id
+          const updatedPerson = {name: newName, number: newNumber}
+          personService.update(targetId, updatedPerson).then(response => {
+            console.log(response);
+            console.log("Number updated");
+            setNewName('')
+            setNewNumber('')
+            getData()
+            }
+          )
+        }
     } else {
       const nameObj = {name: newName, number: newNumber}
       personService.create(nameObj).then(returnedPerson => 
