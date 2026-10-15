@@ -1,5 +1,5 @@
 import phonebook from './db.js'
-import express from 'express'
+import express, { response } from 'express'
 const app = express();
 
 const PORT = 3001;
@@ -21,4 +21,14 @@ app.get('/info', (req,res) => {
     </div>
     `;
     res.send(message);
+})
+
+app.get('/api/persons/:id', (req,res) => {
+    const id = req.params.id;
+    const person = phonebook.find(person => person.id === id)
+    if(person){
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
 })
