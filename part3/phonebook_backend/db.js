@@ -1,4 +1,4 @@
-const phonebook = [
+const data = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -21,4 +21,4 @@ const phonebook = [
     }
 ]
 
-export default phonebook
+export default data
