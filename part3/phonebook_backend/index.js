@@ -1,11 +1,24 @@
 import data from './db.js'
 import express from 'express'
+import morgan from 'morgan';
+
 const app = express();
 
 const PORT = 3001;
 app.listen(PORT, () => console.log(`Server active on ${PORT}`))
 
+
+const requestLogger = (req, res, next) => {
+    console.log('Method', req.method);
+    console.log('path', req.path);
+    console.log('Body', req.body);
+    console.log('---');
+    next()
+}
+
 app.use(express.json())
+// app.use(requestLogger)
+app.use(morgan('tiny'))
 
 let phonebook = data;
 
@@ -77,4 +90,10 @@ app.post('/api/persons', (req,res) => {
     phonebook = phonebook.concat(person);
     res.send(`${person.name} was added to db`)
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
