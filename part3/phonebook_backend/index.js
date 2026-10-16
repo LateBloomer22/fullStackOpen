@@ -7,7 +7,6 @@ const app = express();
 const PORT = 3001;
 app.listen(PORT, () => console.log(`Server active on ${PORT}`))
 
-
 const requestLogger = (req, res, next) => {
     console.log('Method', req.method);
     console.log('path', req.path);
@@ -18,7 +17,17 @@ const requestLogger = (req, res, next) => {
 
 app.use(express.json())
 // app.use(requestLogger)
-app.use(morgan('tiny'))
+
+
+
+app.use(morgan(function(tokens, req,res) {
+    return [
+        tokens.method(req,res),
+        tokens.url(req,res),
+        tokens.status(req,res),
+        JSON.stringify(req.body),
+    ].join('')
+}))
 
 let phonebook = data;
 
