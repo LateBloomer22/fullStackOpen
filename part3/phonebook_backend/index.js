@@ -2,6 +2,7 @@ import data from './db.js'
 import express from 'express'
 import morgan from 'morgan';
 
+
 const app = express();
 
 const PORT = 3001;
@@ -25,7 +26,7 @@ app.use(morgan(function(tokens, req,res) {
         tokens.url(req,res),
         tokens.status(req,res),
         JSON.stringify(req.body),
-    ].join('')
+    ].join(' ')
 }))
 
 let phonebook = data;
@@ -61,8 +62,8 @@ app.delete('/api/persons/:id' , (req, res) => {
     const id = req.params.id;
     const personFound = phonebook.some(person => person.id === id);
     if(personFound){
+        res.send(phonebook.filter(person => person.id === id)[0])
         phonebook = phonebook.filter(person => person.id !== id);
-        res.send(`person with id ${id} was deleted from database`)
         console.log(phonebook);
         
     } else {
@@ -90,13 +91,15 @@ app.post('/api/persons', (req,res) => {
     }
 
     const person = {
+        id: generateId(),
         name: body.name,
-        number: body.number,
-        id: generateId()
+        number: body.number
     }
 
     phonebook = phonebook.concat(person);
-    res.send(`${person.name} was added to db`)
+    res.send(person)
+
+    
 })
 
 const unknownEndpoint = (request, response) => {

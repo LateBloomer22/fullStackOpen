@@ -17,8 +17,7 @@ const App = () => {
     personService.getAll()
       .then(initialList => {
         setPersons(initialList)     
-        console.log(initialList);
-         
+        console.log(initialList); 
       })
   }
 
