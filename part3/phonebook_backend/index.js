@@ -8,6 +8,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server active on ${PORT}`))
 
+app.use(express.json())
+app.use(express.static('dist'))
+
 const requestLogger = (req, res, next) => {
     console.log('Method', req.method);
     console.log('path', req.path);
@@ -16,7 +19,6 @@ const requestLogger = (req, res, next) => {
     next()
 }
 
-app.use(express.json())
 // app.use(requestLogger)
 
 
