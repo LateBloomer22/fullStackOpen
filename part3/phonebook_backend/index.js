@@ -21,14 +21,14 @@ const requestLogger = (req, res, next) => {
 
 // app.use(requestLogger)
 
-app.use(morgan(function(tokens, req,res) {
-    return [
-        tokens.method(req,res),
-        tokens.url(req,res),
-        tokens.status(req,res),
-        JSON.stringify(req.body),
-    ].join(' ')
-}))
+// app.use(morgan(function(tokens, req,res) {
+//     return [
+//         tokens.method(req,res),
+//         tokens.url(req,res),
+//         tokens.status(req,res),
+//         JSON.stringify(req.body),
+//     ].join(' ')
+// }))
 
 
 app.get('/api/persons', (req,res) => {
@@ -57,59 +57,59 @@ app.get('/api/persons/:id', (req,res) => {
     })
 })
 
-// app.get('/api/notes/:id', (request, response) => {
-//   Note.findById(request.params.id).then(note => {
-//     response.json(note)
-//   })
-// })
+app.delete('/api/persons/:id' , (req, res) => {
+    const id = req.params.id;
+    console.log(id, typeof(id));
+    Contact.findByIdAndDelete(id).then(
+        contact => {console.log(contact);
+        res.send(contact)
+    })
+})
 
-// app.delete('/api/persons/:id' , (req, res) => {
-//     const id = req.params.id;
-//     const personFound = phonebook.some(person => person.id === id);
-//     if(personFound){
-//         res.send(phonebook.filter(person => person.id === id)[0])
-//         phonebook = phonebook.filter(person => person.id !== id);
-//         console.log(phonebook);
-        
-//     } else {
-//         res.statusMessage = 'Person was not found';
-//         res.status(404).end()
-//     }
-// })
 
-// const generateId = () => {
-//   const maxId = phonebook.length > 0 ? Math.max(...phonebook.map(person => Number(person.id))) : 0
-//   return String(maxId + 1)
-// }
-
-// app.post('/api/persons', (req,res) => {
-//     const body = req.body;
-
-//     if(!body.name || !body.number){
-//         return res.status(404).json({
-//             error: "Name / Number field missing"
-//         });
-//     } else if (phonebook.some(person => person.name === body.name)){
-//         return res.status(404).json({
-//             error: "This name already exists, names must be unique in database"
-//         })
-//     }
-
-//     const person = {
-//         id: generateId(),
-//         name: body.name,
-//         number: body.number
-//     }
-
-//     phonebook = phonebook.concat(person);
-//     res.send(person)
-
+app.post('/api/persons', (req,res) => {
+    const body = req.body;
+    if(!body.name || !body.number){
+        return res.status(404).json({
+            error: "Name / Number field missing"
+        });
+    }
     
-// })
+    const contact = new Contact({
+        name: body.name,
+        number: body.number
+    })
+    
+    contact.save().then(savedContact => {
+        res.json(savedContact)
+    })
+})
 
+
+/* Portions ignored for exercise 3.14
+} else if (phonebook.some(person => person.name === body.name)){
+    return res.status(404).json({
+        error: "This name already exists, names must be unique in database"
+})
+}
+
+// Contact.deleteOne({_id })
+// const personFound = phonebook.some(person => person.id === id);
+// if(personFound){
+//     res.send(phonebook.filter(person => person.id === id)[0])
+//     phonebook = phonebook.filter(person => person.id !== id);
+//     console.log(phonebook);
+    
+// } else {
+//     res.statusMessage = 'Person was not found';
+//     res.status(404).end()
+// }
+*/
+       
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+    response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
-
+        
+        
