@@ -86,23 +86,25 @@ app.post('/api/persons', (req,res, next) => {
     
     contact.save().then(savedContact => {
         res.json(savedContact)
-    })
+    }).catch(error => next(error))
 })
 
 
-const unknownEndpoint = (request, response, next) => {
+const unknownEndpoint = (req, res, next) => {
     const error = new Error('unknown');
     next(error)
 }
 
 app.use(unknownEndpoint)
 
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, req, res, next) => {
     if(error.name === 'CastError'){
-        return response.status(400).send({error: 'id value is not correct'})
+        return res.status(400).send({error: 'id value is not correct'})
     } else if (error.message === 'unknown') {
-        return response.status(400).send({error: 'Sorry, this endpoint is not valid'})
-    } 
+        return res.status(400).send({error: 'Sorry, this endpoint is not valid'})
+    }  else if (error.name === 'ValidationError'){
+        return res.status(400).json({error: error.message})
+    }
     next(error)
 }
 

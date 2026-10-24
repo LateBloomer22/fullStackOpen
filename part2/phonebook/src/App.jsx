@@ -76,6 +76,7 @@ const App = () => {
         }, 5000);
         
         }
+      ).catch(response =>  console.log(response, "Hello")
       )
     }   
   }
