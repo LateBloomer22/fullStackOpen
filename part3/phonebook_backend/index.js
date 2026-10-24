@@ -11,24 +11,14 @@ app.listen(PORT, () => console.log(`Server active on ${PORT}`))
 app.use(express.json())
 app.use(express.static('dist'))
 
-const requestLogger = (req, res, next) => {
-    console.log('Method', req.method);
-    console.log('path', req.path);
-    console.log('Body', req.body);
-    console.log('---');
-    next()
-}
-
-// app.use(requestLogger)
-
-// app.use(morgan(function(tokens, req,res) {
-//     return [
-//         tokens.method(req,res),
-//         tokens.url(req,res),
-//         tokens.status(req,res),
-//         JSON.stringify(req.body),
-//     ].join(' ')
-// }))
+app.use(morgan(function(tokens, req,res) {
+    return [
+        tokens.method(req,res),
+        tokens.url(req,res),
+        tokens.status(req,res),
+        JSON.stringify(req.body),
+    ].join(' ')
+}))
 
 
 app.get('/api/persons', (req,res) => {
@@ -85,6 +75,11 @@ app.post('/api/persons', (req,res) => {
     })
 })
 
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 /* Portions ignored for exercise 3.14
 } else if (phonebook.some(person => person.name === body.name)){
@@ -93,23 +88,28 @@ app.post('/api/persons', (req,res) => {
 })
 }
 
-// Contact.deleteOne({_id })
-// const personFound = phonebook.some(person => person.id === id);
-// if(personFound){
-//     res.send(phonebook.filter(person => person.id === id)[0])
-//     phonebook = phonebook.filter(person => person.id !== id);
-//     console.log(phonebook);
+Contact.deleteOne({_id })
+const personFound = phonebook.some(person => person.id === id);
+if(personFound){
+    res.send(phonebook.filter(person => person.id === id)[0])
+    phonebook = phonebook.filter(person => person.id !== id);
+    console.log(phonebook);
     
-// } else {
-//     res.statusMessage = 'Person was not found';
-//     res.status(404).end()
-// }
-*/
-       
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+} else {
+    res.statusMessage = 'Person was not found';
+    res.status(404).end()
 }
 
-app.use(unknownEndpoint)
+const requestLogger = (req, res, next) => {
+    console.log('Method', req.method);
+    console.log('path', req.path);
+    console.log('Body', req.body);
+    console.log('---');
+    next()
+}
+
+app.use(requestLogger)
+*/
+       
         
         
