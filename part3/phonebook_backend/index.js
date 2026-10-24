@@ -56,6 +56,20 @@ app.delete('/api/persons/:id' , (req, res) => {
     })
 })
 
+app.put('/api/persons/:id', (req,res,err) => {
+    const {number} = req.body;
+    Contact.findById(req.params.id)
+        .then(contact => {
+            if(!contact){
+                return res.status(404).end()
+            }
+            contact.number = number
+            return contact.save().then((updatedContact) => {
+                res.json(updatedContact)
+            })
+        }).catch(err => next(err))
+})
+
 
 app.post('/api/persons', (req,res, next) => {
     const body = req.body;
@@ -88,7 +102,8 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({error: 'id value is not correct'})
     } else if (error.message === 'unknown') {
         return response.status(400).send({error: 'Sorry, this endpoint is not valid'})
-    }
+    } 
+    next(error)
 }
 
 app.use(errorHandler)
