@@ -21,10 +21,10 @@ app.use(morgan(function(tokens, req,res) {
 }))
 
 
-app.get('/api/persons', (req,res) => {
+app.get('/api/persons', (req,res, next) => {
     Contact.find({}).then(result => {
         res.json(result)
-    })
+    }).catch(error => next(error))
 })
 
 app.get('/info', (req,res) => {
@@ -41,10 +41,10 @@ app.get('/info', (req,res) => {
     })
 })
 
-app.get('/api/persons/:id', (req,res) => {
+app.get('/api/persons/:id', (req,res, next) => {
     Contact.findById(req.params.id).then(contact => {
         res.json(contact)
-    })
+    }).catch(error => next(error))
 })
 
 app.delete('/api/persons/:id' , (req, res) => {
@@ -57,7 +57,7 @@ app.delete('/api/persons/:id' , (req, res) => {
 })
 
 
-app.post('/api/persons', (req,res) => {
+app.post('/api/persons', (req,res, next) => {
     const body = req.body;
     if(!body.name || !body.number){
         return res.status(404).json({
@@ -75,11 +75,23 @@ app.post('/api/persons', (req,res) => {
     })
 })
 
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+
+const unknownEndpoint = (request, response, next) => {
+    const error = new Error('unknown');
+    next(error)
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    if(error.name === 'CastError'){
+        return response.status(400).send({error: 'id value is not correct'})
+    } else if (error.message === 'unknown') {
+        return response.status(400).send({error: 'Sorry, this endpoint is not valid'})
+    }
+}
+
+app.use(errorHandler)
 
 /* Portions ignored for exercise 3.14
 } else if (phonebook.some(person => person.name === body.name)){
