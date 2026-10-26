@@ -64,19 +64,29 @@ const App = () => {
         }
     } else {
       const nameObj = {name: newName, number: newNumber}
+      // axios.post(baseUrl, newPerson).then(response => response.data)
       personService.create(nameObj).then(returnedPerson => 
+      {
+        if (Object.hasOwn(returnedPerson, 'error'))
         {
-        setPersons([...persons, returnedPerson])
-        setNewName('')
-        setNewNumber('')
-        setSuccess(true);
-        setMessage(`Added ${returnedPerson.name}`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000);
-        
-        }
-      ).catch(response =>  console.log(response, "Hello")
+            setNewName('')
+            setNewNumber('')
+            setSuccess(false);
+            setMessage(returnedPerson.error)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000);
+        } else {
+            setPersons([...persons, returnedPerson])
+            setNewName('')
+            setNewNumber('')
+            setSuccess(true);
+            setMessage(`Added ${returnedPerson.name}`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000);
+          }
+      }
       )
     }   
   }
