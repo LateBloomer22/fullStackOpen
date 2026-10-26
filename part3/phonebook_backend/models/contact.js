@@ -11,13 +11,25 @@ mongoose.connect(url, {family: 4}).then(result => {
     console.log('error connecting to mongoDB: ', error.message);
 })
 
+function validator(value){
+    const regex = new RegExp("^[0-9]{2,3}-[0-9]{5,}$", "i" )
+    return regex.test(value)
+}
+
+const customValidator = [validator, "Phone number should be of length 8 and format should be: 12(3)-45678(9) where (X) represents optional entry"]
+
 const contactSchema = new mongoose.Schema({
     name: {
         type: String,
         minLength: 3,
         required: true,
     },
-    number: String,
+    number: {
+        type: String,
+        minLength: 8,
+        validate: customValidator,
+        required: true,
+    },
 })
 
 contactSchema.set('toJSON', {

@@ -86,7 +86,10 @@ app.post('/api/persons', (req,res, next) => {
     
     contact.save().then(savedContact => {
         res.json(savedContact)
-    }).catch(error => next(error))
+    }).catch(error => {
+        console.log(error);
+        next(error)
+    })
 })
 
 
