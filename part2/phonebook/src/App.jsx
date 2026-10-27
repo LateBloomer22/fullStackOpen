@@ -84,7 +84,7 @@ const App = () => {
             setMessage(`Added ${returnedPerson.name}`)
             setTimeout(() => {
               setMessage(null)
-            }, 5000);
+            }, 10000);
           }
       }
       )

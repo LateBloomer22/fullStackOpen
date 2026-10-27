@@ -1,10 +1,8 @@
-import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
-
-const deleteEntry = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`).then(response => {
-        console.log(response);
-    })
+function validator(value){
+    const regex = new RegExp("^[0-9]{2,3}-[0-9]{5,}$", "i" )
+    return regex.test(value)
 }
 
-deleteEntry(2);
+console.log(validator('040-1234556'));
+
+console.log(validator('1-22334455'));
