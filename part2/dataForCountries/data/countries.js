@@ -1,20 +1,16 @@
-let allCountries;
+const url = 'https://studies.cs.helsinki.fi/restcountries/api/all';
 
-fetch('https://studies.cs.helsinki.fi/restcountries/api/all')
-    .then(response => {
+const allCountries = async () => {
+    try {
+        const response = await fetch(url);
         if(!response.ok){
-            throw new Error('HTTP error')
+            return [];
         }
-        return response.json()
-    })
-    .then(data => {
-        // console.log(data);
-        allCountries = data;
-        console.log(Object.entries(allCountries).slice(0,2))
-    })
-    .catch(error => console.log(error))
-
-    const arraya = [[0, {}], [1, {}], [2, {}]]
+        return await response.json();
+    } catch {
+        return [];
+    }
+}
 
 
-// export default allCountries
+export default allCountries
