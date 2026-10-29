@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CountryFilter = ({filteredCountry}) => {
+const CountryFilter = ({filteredCountry, selectedCountry}) => {
 
   if (filteredCountry.length > 10) {
   return (
@@ -8,9 +8,16 @@ const CountryFilter = ({filteredCountry}) => {
         <p>Too Many matches, specify another filter</p>
     </>
   )} 
-  // else if (filteredCountry.length === 1) {
-  //   return
-  // }
+  else if (filteredCountry.length === 1) {
+    selectedCountry(filteredCountry[0][1])
+    return (
+      <ul>
+        <li>
+          {filteredCountry[0][1].name.common}
+        </li>
+      </ul>
+    )
+  }
   
   else {
     return (
@@ -18,9 +25,9 @@ const CountryFilter = ({filteredCountry}) => {
       <ul>
         {filteredCountry.map(country => 
         <li key={country[0]}>{country[1].name.common} 
-          {/* <button>
+          <button onClick={() => selectedCountry(country[1])}>
             show
-          </button> */}
+          </button>
         </li>)}
       </ul>
       </>

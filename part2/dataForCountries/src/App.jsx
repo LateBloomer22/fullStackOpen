@@ -21,9 +21,9 @@ function App() {
     setFilteredCountry(countryList.filter(country => country[1].name.common.toLowerCase().includes(event.target.value.toLowerCase())))
   }
 
-  if(filteredCountry.length === 1){
-    setCountry(filteredCountry[1])
-    // setCountry(countryList)
+  const selectedCountry = (country) => {
+    setCountry(country)
+    console.log(country);
   }
   
   return (
@@ -32,11 +32,10 @@ function App() {
       <input type="text" value={input} onChange={handleInput}/>
 
       {/* While typing */}
-      <CountryFilter filteredCountry={filteredCountry}/>
+      <CountryFilter filteredCountry={filteredCountry} selectedCountry={selectedCountry}/>
       
-
       {/* When one result found or selected*/}
-      {/* <Country country={country}/> */}
+      <Country country={country}/>
     </>
   )
 }
