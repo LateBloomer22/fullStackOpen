@@ -4,6 +4,11 @@ import { useState, useEffect } from "react"
 import Country from "../components/Country";
 import CountryFilter from "../components/CountryFilter";
 
+// Remaining for 30th Oct
+// 1. Add weather display
+// 2. When the country filter changes from one entry to multiple, the display should dissappear till user selects another country
+// 3. Console showing another error -> resolve that as well
+
 function App() {
   const [input, setInput] = useState('')
   const [country, setCountry] = useState({})
