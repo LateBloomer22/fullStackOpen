@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import weather from "../data/weather"
+import Weather from './Weather'
+
+const api_key = import.meta.env.VITE_WEATHER_API_KEY
+console.log(api_key);
 
 const Country = ({country}) => {
-  if(Object.keys(country).length === 0) {
-    return (
-      <>
-      </>
-    )
-  } else {
+  const [cityWeather, setCityWeather] = useState();
+
+  useEffect(() => {
+    const [lat, long] = country.latlng;
+    weather(lat, long, api_key).then(response => {setCityWeather(response)})
+  }, [])
+
     return (
       <div>
           <h2>{country.name.common}</h2>
@@ -21,13 +28,11 @@ const Country = ({country}) => {
           )}
         </ul>
         <img src={country.flags.png} alt={country.flags.alt} />
-        {/* <h2>Weather in Country</h2>
-        <p>Temperature</p>
-        <p>Weather icon</p>
-        <p>Wind speed</p> */}
+        <h2>Weather in {country.capital}</h2>
+        {cityWeather ? <Weather weather={cityWeather} /> : <></>}
       </div>
     )
   }
-}
+// }
 
 export default Country

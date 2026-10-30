@@ -1,8 +1,7 @@
 import React from "react"
 import allCountries from "../data/countries"
 import { useState, useEffect } from "react"
-import Country from "../components/Country";
-import CountryFilter from "../components/CountryFilter";
+import CountryFilter from "../components/CountryFilter"
 
 // Remaining for 30th Oct
 // 1. Add weather display
@@ -11,7 +10,7 @@ import CountryFilter from "../components/CountryFilter";
 
 function App() {
   const [input, setInput] = useState('')
-  const [country, setCountry] = useState({})
+  const [country, setCountry] = useState()
   const [countryList, setCountryList] = useState([])
   const [filteredCountry, setFilteredCountry] = useState([])
 
@@ -27,9 +26,9 @@ function App() {
   }
 
   const selectedCountry = (country) => {
-    setCountry(country)
-    console.log(country);
-  }
+      setCountry(country)
+      console.log(country);
+    }    
   
   return (
     <>
@@ -37,10 +36,7 @@ function App() {
       <input type="text" value={input} onChange={handleInput}/>
 
       {/* While typing */}
-      <CountryFilter filteredCountry={filteredCountry} selectedCountry={selectedCountry}/>
-      
-      {/* When one result found or selected*/}
-      <Country country={country}/>
+      <CountryFilter filteredCountry={filteredCountry} selectedCountry={selectedCountry} country={country}/>
     </>
   )
 }
