@@ -11,6 +11,8 @@ const Weather = ({weather}) => {
   return (
     <>
         <p>Temperature {tempInCel} Celcius</p>
+        <p>{weather.weather[0].description} </p>
+        <img src={`https://openweathermap.org/payload/api/media/file/${weather.weather[0].icon}.png`} />
         {/* <p>Weather icon</p> */}
         <p>Wind {weather.wind.speed}</p>
     </>

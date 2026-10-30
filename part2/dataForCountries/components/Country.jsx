@@ -4,7 +4,6 @@ import weather from "../data/weather"
 import Weather from './Weather'
 
 const api_key = import.meta.env.VITE_WEATHER_API_KEY
-console.log(api_key);
 
 const Country = ({country}) => {
   const [cityWeather, setCityWeather] = useState();

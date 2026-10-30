@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Country from './Country'
 
-const CountryFilter = ({filteredCountry, selectedCountry, country}) => {
+const CountryFilter = ({filteredCountry}) => {
+  const [country, setCountry] = useState()
 
   if (filteredCountry.length > 10) {
   return (
@@ -22,19 +23,18 @@ const CountryFilter = ({filteredCountry, selectedCountry, country}) => {
       </>
     )
   }
-  
   else {
     return (
       <>
         <ul>
           {filteredCountry.map(country => 
           <li key={country[0]}>{country[1].name.common} 
-            <button onClick={() => selectedCountry(country[1])}>
+            <button onClick={() => setCountry(country[1])}>
               show
             </button>
           </li>)}
         </ul>
-        {country ? <Country country={country } /> : <></>}
+        {country ? <Country country={country} /> : <></>}
       </>
     )
   }
